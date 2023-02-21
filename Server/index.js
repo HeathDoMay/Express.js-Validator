@@ -2,7 +2,7 @@
 const express = require('express');
 const multer = require('multer');
 const mysql = require('mysql2');
-const { body, validationResult } = require('express-validator');
+const { check, checkSchema, body, validationResult } = require('express-validator');
 
 //Setup defaults for script
 const app = express();
@@ -33,12 +33,14 @@ app.get('/', upload.none(), (request, response) => {
 });
 
 app.post('/',
-    body('level').isLength({ min: 2 }),
-    body('type').isLength({ min: 2 }),
-    body('intcom').isLength({ min: 2 }),
-    body('paradigms').isLength({ min: 2 }),
-    body('year').isInt(),
-    body('year').isLength({ min: 4 }),
+
+    check("name", "Please enter a valid Dog Breed.").isLength({ min: 3 }),
+    check("level", "Please enter a valid color(s) for the Dog Breed.").isLength({ min: 3 }),
+    check("type", "Please enter a valid Origin for the Dog Breed.").isLength({ min: 3 }),
+    check("intcom", "Please select a valid size for the Dog Breed.").isIn(['Small', "Big"]),
+    check("paradigms", "Please enter a valid unique fact about the Dog Breed.").isLength({ min: 3 }),
+    check("year", "Please enter a valid lifespan for the Dog Breed.").isLength({ min: 3 }),
+
     (request, response) => {
         const insertSql = `INSERT INTO ProgrammingPolyglot (name, abstraction_level, type_id, interpreted_compiled, paradigms, year) VALUES (?, ?, ?, ?, ?, ?)`
         let queryParameters = [
