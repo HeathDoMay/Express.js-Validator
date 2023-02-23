@@ -1,146 +1,245 @@
 <!doctype html>
 <html>
-    <head>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0'>            
-        <title>Programming Polyglot</title>
-        <link rel='stylesheet' href='style.css'>
-    </head>
-    <body>
-        <h1>Programming Polyglot</h1>
 
-        <hr/>
+<head>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Programming Polyglot</title>
+    <link rel='stylesheet' href='style.css'>
+</head>
 
-        <div  class='row'>
-            <div class='col-2'>
-                <label>Language Name</label>
-            </div>
-            <div class='col-10'>
-                <input id='name' type='text' />
-            </div>
+<body>
+    <h1>Programming Polyglot</h1>
+    <hr />
+
+    <div id="invalidate-form" class="alert-error"></div>
+
+    <div id="success-form" class="success"></div>
+
+    <div class='row'>
+        <div class='col-2'>
+            <label>Language Name</label>
         </div>
-
-        <div  class='row'>
-            <div class='col-2'>
-                <label>Level</label>
-            </div>
-            <div class='col-10'>
-                <select id='level'>
-                    <option value=''></option>
-                    <option value='High'>High</option>
-                    <option value='Low'>Low</option>
-                </select>
-            </div>
+        <div class='col-10'>
+            <input id='name' type='text' name="name"/>
         </div>
+    </div>
+    <div class="row">
+        <div id="name-error" class="col-12 error-message">&nbsp;</div>
+    </div>
 
-        <div  class='row'>
-            <div class='col-2'>
-                <label>Type System</label>
-            </div>
-            <div class='col-10'>
-                <select id='type'>
-                    <option value=''></option>
-                    <option value='Static'>Static</option>
-                    <option value='Dynamic'>Dynamic</option>
-                </select>
-            </div>
+    <div class='row'>
+        <div class='col-2'>
+            <label>Level</label>
         </div>
-
-        <div  class='row'>
-            <div class='col-2'>
-                <label>Interpreted or Compiled</label>
-            </div>
-            <div class='col-10'>
-                <select id='intcom'>
-                    <option value=''></option>
-                    <option value='Interpreted'>Interpreted</option>
-                    <option value='Compiled'>Compiled</option>
-                </select>
-            </div>
+        <div class='col-10'>
+            <select id='level' name="level">
+                <option value=''></option>
+                <option value='High'>High</option>
+                <option value='Low'>Low</option>
+            </select>
         </div>
+    </div>
+    <div class="row">
+        <div id="level-error" class="col-12 error-message">&nbsp;</div>
+    </div>
 
-        <div  class='row'>
-            <div class='col-2'>
-                <label>Paradigms</label>
-            </div>
-            <div class='col-10'>
-                <select id='paradigms'>
-                    <option value=''></option>
-                    <option value='Multi'>Multiple</option>
-                    <option value='Procedural'>Procedural</option>
-                    <option value='OOP'>OOP</option>
-                    <option value='Logic'>Logic</option>
-                </select>
-            </div>
+    <div class='row'>
+        <div class='col-2'>
+            <label>Type System</label>
         </div>
-
-        <div  class='row'>
-            <div class='col-2'>
-                <label>Year</label>
-            </div>
-            <div class='col-10'>
-                <input id='year' type='text' />
-            </div>
+        <div class='col-10'>
+            <select id='type' name="type">
+                <option value=''></option>
+                <option value='Static'>Static</option>
+                <option value='Dynamic'>Dynamic</option>
+            </select>
         </div>
-        
-      
-        <div class='row'>
-            <div class='col-12'>
-                <button id='search'>Search for Languages</button>
-            </div>
+    </div>
+    <div class="row">
+        <div id="type-error" class="col-12 error-message">&nbsp;</div>
+    </div>
+
+    <div class='row'>
+        <div class='col-2'>
+            <label>Interpreted or Compiled</label>
         </div>
+        <div class='col-10'>
+            <select id='intcom' name="intcom">
+                <option value=''></option>
+                <option value='Interpreted'>Interpreted</option>
+                <option value='Compiled'>Compiled</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div id="intcom-error" class="col-12 error-message">&nbsp;</div>
+    </div>
 
-        <hr/>
+    <div class='row'>
+        <div class='col-2'>
+            <label>Paradigms</label>
+        </div>
+        <div class='col-10'>
+            <select id='paradigms' name="paradigms">
+                <option value=''></option>
+                <option value='Multi'>Multiple</option>
+                <option value='Procedural'>Procedural</option>
+                <option value='OOP'>OOP</option>
+                <option value='Logic'>Logic</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div id="paradigms-error" class="col-12 error-message">&nbsp;</div>
+    </div>
 
-        <script>
-            const isEmpty = (obj) => Object.keys(obj).length === 0;
+    <div class='row'>
+        <div class='col-2' >
+            <label>Year</label>
+        </div>
+        <div class='col-10' >
+            <input id='year' type='text' name="year"/>
+        </div>
+    </div>
+    <div class="row">
+        <div id="year-error" class="col-12 error-message">&nbsp;</div>
+    </div>
 
-            document.getElementById('search').addEventListener('click', (event) => {
-                const formData = new FormData();
 
-                if (document.getElementById('name').value.length !== 0) {
-                    formData.append('name', document.getElementById('name').value);
+    <div class='row'>
+        <div class='col-12'>
+            <button id='search'>Insert Language</button>
+        </div>
+    </div>
+
+    <hr />
+
+    <script>
+        const isEmpty = (obj) => Object.keys(obj).length === 0;
+        const errorBanner = document.getElementById('invalidate-form');
+        errorBanner.hidden = true;
+
+        fetch("http://localhost/langs/", { method: 'GET' })
+            .then((response) => {
+                return new Promise((resolve) => response.json()
+                    .then((json) => resolve({
+                        status: response.status,
+                        json,
+                    })
+                    ));
+            })
+            .then(({ status, json }) => {
+                if (200 === status) {
+
+                    //NAME TEXT PLACEHOLDER
+                    // const leveldd = document.getElementById('level');
+                    // for (ProgrammingPolyglot of json.data) {
+                    //     let option = document.createElement("option");
+                    //     option.value = ProgrammingPolyglot.id;
+                    //     option.text = ProgrammingPolyglot.level;
+                    //     leveldd.add(option);
+                    // }
+
+                    // const typedd = document.getElementById('type');
+                    // for (ProgrammingPolyglot of json.data) {
+                    //     let option = document.createElement("option");
+                    //     option.value = ProgrammingPolyglot.id;
+                    //     option.text = ProgrammingPolyglot.type_id;
+                    //     typedd.add(option);
+                    // }
+
+
+                    // const intcomdd = document.getElementById('intcom');
+                    // for (ProgrammingPolyglot of json.data) {
+                    //     let option = document.createElement("option");
+                    //     option.value = ProgrammingPolyglot.id;
+                    //     option.text = ProgrammingPolyglot.intcom;
+                    //     intcomdd.add(option);
+                    // }
+
+
+                    // const paradigmsdd = document.getElementById('paradigms');
+                    // for (ProgrammingPolyglot of json.data) {
+                    //     let option = document.createElement("option");
+                    //     option.value = ProgrammingPolyglot.id;
+                    //     option.text = ProgrammingPolyglot.paradigms;
+                    //     paradigmsdd.add(option);
+                    // }
+
                 }
-                if (document.getElementById('level').value.length !== 0) {
-                    formData.append('level', document.getElementById('level').value);
-                }
-                if (document.getElementById('type').value.length !== 0) {
-                    formData.append('type', document.getElementById('type').value);
-                }
-                if (document.getElementById('intcom').value.length !== 0) {
-                    formData.append('intcom', document.getElementById('intcom').value);
-                }
-                if (document.getElementById('paradigms').value.length !== 0) {
-                    formData.append('paradigms', document.getElementById('paradigms').value);
-                }
-                if (document.getElementById('year').value.length !== 0) {
-                    formData.append('year', document.getElementById('year').value);
-                }
-                    //Settings for FETCH API request
-                let fetchSettings = {
-                    method: 'POST',
-                    body: formData
-                };
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
 
-                //Send FETCH API request
-                fetch("http://localhost/", fetchSettings)
-                    .then((response) => {
-                        return new Promise((resolve) => response.json()
-                            .then((json) => resolve({
-                                status: response.status,
-                                json,
-                            })
+        document.getElementById('search').addEventListener('click', (event) => {
+            const formData = new FormData();
+
+            if (document.getElementById('name').value.length !== 0) {
+                formData.append('name', document.getElementById('name').value);
+            }
+            if (document.getElementById('level').value.length !== 0) {
+                formData.append('level', document.getElementById('level').value);
+            }
+            if (document.getElementById('type').value.length !== 0) {
+                formData.append('type', document.getElementById('type').value);
+            }
+            if (document.getElementById('intcom').value.length !== 0) {
+                formData.append('intcom', document.getElementById('intcom').value);
+            }
+            if (document.getElementById('paradigms').value.length !== 0) {
+                formData.append('paradigms', document.getElementById('paradigms').value);
+            }
+            if (document.getElementById('year').value.length !== 0) {
+                formData.append('year', document.getElementById('year').value);
+            }
+            //Settings for FETCH API request
+            let fetchSettings = {
+                method: 'POST',
+                body: formData
+            };
+
+            //Send FETCH API request
+            fetch("http://localhost/", fetchSettings)
+                .then((response) => {
+                    return new Promise((resolve) => response.json()
+                        .then((json) => resolve({
+                            status: response.status,
+                            json,
+                        })
                         ));
-                    })
-                    //Logic to display errors on form 
-                    .then(({status, json}) => {
-                        
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-                return;
-                    
-            });               
-        </script>
-    </body>
+                })
+                //Logic to display errors on form 
+                .then(({ status, json }) => {
+                    const errorMessages = document.getElementsByClassName('error-message');
+                    errorBanner.hidden = true;
+                    const successBanner = document.getElementById('success-form');
+                    successBanner.hidden = true;
+
+                    for (htmlElement of errorMessages) {
+                        htmlElement.innerHTML = '&nbsp;';
+                    }
+                    if (status === 400) {
+                        errorBanner.innerText = 'Submission has errors. Please correct and resubmit';
+                        errorBanner.hidden = false;
+                        for (error of json.errors) {
+                            const errorId = error.param + '-error';
+                            document.getElementById(errorId).innerHTML = error.msg
+                        }
+                        console.log(json);
+                    } else {
+                        successBanner.innerText = 'Submission has been submitted Successfully!';
+                        successBanner.hidden = false;
+                        console.log("not 400");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            return;
+
+        });               
+    </script>
+</body>
+
 </html>

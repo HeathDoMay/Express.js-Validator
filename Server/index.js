@@ -15,7 +15,7 @@ const connection = mysql.createConnection({
     database: 'HEATHMAY'
 });
 
-app.get('/', upload.none(), (request, response) => {
+app.get('/langs/', upload.none(), (request, response) => {
     connection.query('SELECT * FROM ProgrammingPolyglot', (error, result) => {
         if (error) {
             console.log(error);
@@ -32,16 +32,31 @@ app.get('/', upload.none(), (request, response) => {
     });
 });
 
-app.post('/',
+app.post(
+    '/', upload.none(), 
 
-    check("name", "Please enter a valid Dog Breed.").isLength({ min: 3 }),
-    check("level", "Please enter a valid color(s) for the Dog Breed.").isLength({ min: 3 }),
-    check("type", "Please enter a valid Origin for the Dog Breed.").isLength({ min: 3 }),
-    check("intcom", "Please select a valid size for the Dog Breed.").isIn(['Small', "Big"]),
-    check("paradigms", "Please enter a valid unique fact about the Dog Breed.").isLength({ min: 3 }),
-    check("year", "Please enter a valid lifespan for the Dog Breed.").isLength({ min: 3 }),
+    
+
+    check('name', 'Please enter a valid name.').isLength({ min: 3 }),
+    check('level', "Please enter a valid level.").isIn(['High', 'Low']),
+    check('type', "Please enter a valid type system.").isIn(['Static', "Dynamic"]),
+    check("intcom", "Please indicate either interpreted or compiled.").isIn(['Interpreted', 'Compiled']),
+    check("paradigms", "Please enter a valid paradigm.").isIn(['Multi', "Procedural", "OOP", "Logic"]),
+    check("year", "Please enter a valid year.").isLength({ min: 4 }),
 
     (request, response) => {
+        const errors = validationResult(request);
+        if (!errors.isEmpty()) {
+            return response
+                .status(400)
+                .setHeader('Access-Control-Allow-Origin', "*")
+                .json({
+                    message: 'Request fields or files are invalid.',
+                    errors: errors.array(),
+                })
+        }
+
+
         const insertSql = `INSERT INTO ProgrammingPolyglot (name, abstraction_level, type_id, interpreted_compiled, paradigms, year) VALUES (?, ?, ?, ?, ?, ?)`
         let queryParameters = [
             request.body.name,
@@ -51,7 +66,6 @@ app.post('/',
             request.body.paradigms,
             request.body.year
         ];
-        const errors = validationResult(request);
         if (!errors.isEmpty()) {
             return response.status(400).json({ errors: errors.array() });
         }
@@ -70,7 +84,7 @@ app.post('/',
                 //Default response object
                 response
                     .setHeader('Access-Control-Allow-Origin', '*') //Prevent CORS error
-                    .json({ message: 'Form submission was succesful!' });
+                    .json({ message: 'Form submission was successful!' });
             }
         });
     });
